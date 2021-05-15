@@ -1,3 +1,5 @@
+// this is a test to check git stuff is working!
+
 #include "fix_fft.h"
 
 #define SAMPLES             128                    // must be power of 2
