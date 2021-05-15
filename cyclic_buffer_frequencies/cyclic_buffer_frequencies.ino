@@ -110,6 +110,8 @@ void loop() {
       average_index = (double)max_index;
     }
     cycling_max_indices[buffer_pointer] = average_index; // store 'index' of largest frequency component
+    Serial.print("Frequency: "); Serial.print(INDS_TO_FREQS*average_index);
+    Serial.print(" Magnitude: "); Serial.println(max_magnitude);
     buffer_pointer = (buffer_pointer + 1) % BUFFER_SIZE;
     RMS_noise_floor = RMS_noise_floor + RMS_noise;
   }
