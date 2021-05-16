@@ -4,11 +4,12 @@
 
 #include "fix_fft.h"
 
-#define SAMPLES             128                    // must be power of 2
+#define LOG_SAMPLES          7
+#define SAMPLES             (int)pow(2,LOG_SAMPLES) // must be power of 2
 #define BUFFER_SIZE         20
 #define SAMPLE_FREQ         4000.0
-#define SPEED_OF_SOUND      343.0                 // m/s
-#define SAMPLE_WAIT         1000000/SAMPLE_FREQ   // microseconds. This gives 2kHz sampling rate
+#define SPEED_OF_SOUND      343.0                   // m/s
+#define SAMPLE_WAIT         1000000/SAMPLE_FREQ     // microseconds. This gives 2kHz sampling rate
 #define INDS_TO_FREQS       SAMPLE_FREQ/SAMPLES
 
 #define PEAK_NOISE_THRESH         3.0
@@ -112,7 +113,7 @@ void fourier_transform_loop(void) // Purpose: store highest freq and its magnitu
   //Serial.println("Fourier transform loop");
   fill_arrays();
   //Serial.println("fill_arrays()");
-  fix_fft(vReal, vImag, 8, 0);                          // log2(8) = 256, the number of samples used. Stores values in vReal and vImag
+  fix_fft(vReal, vImag, LOG_SAMPLES, 0);                          // log2(8) = 256, the number of samples used. Stores values in vReal and vImag
   //Serial.println("fix_fft(...)");
   find_mags_and_inds();                                  // find largest magnitude frequency. updates 'average_index' and 'sum_magnitude'
   //Serial.println("find mags and inds");
