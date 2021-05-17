@@ -4,9 +4,9 @@
 
 #include "fix_fft.h"
 
-#define LOG_SAMPLES          7
+#define LOG_SAMPLES         7
 #define SAMPLES             (int)pow(2,LOG_SAMPLES) // must be power of 2
-#define BUFFER_SIZE         20
+#define BUFFER_SIZE         60
 #define SAMPLE_FREQ         4000.0
 #define SPEED_OF_SOUND      343.0                   // m/s
 #define SAMPLE_WAIT         1000000/SAMPLE_FREQ     // microseconds. This gives 2kHz sampling rate
