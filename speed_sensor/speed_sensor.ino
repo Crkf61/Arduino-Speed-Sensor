@@ -11,9 +11,9 @@ void setup() {
   analogRead(AUDIO); // Make sure pin is stable
 
   pinMode(RED, OUTPUT);
-  pinMode(BLUE, OUTPUT);
+  //pinMode(BLUE, OUTPUT);
   pinMode(GREEN, OUTPUT);
-  pinMode(YELLOW, OUTPUT);
+  //pinMode(YELLOW, OUTPUT);
 
   Serial.println("Beginning fourier transform testing");
 }

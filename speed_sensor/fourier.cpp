@@ -17,7 +17,7 @@ void fourier_transform_loop() {
   //   may not be possible on an arduino without good data analysis
   float min_magnitude = 10.0;
 
-  char circle_ptr = 0;
+  static int circle_ptr = 0;
 
   static State state = approach;
   static int loud_volume_counter = 0;
@@ -42,20 +42,24 @@ void fourier_transform_loop() {
 
   if (state == passed) {
     // Output the doppler shift calculation
+    Serial.println("DRONE PASSED! HERE ARE THE RESULTS");
     for (int i = 0; i < SAMPLES_IN_CALCULATION; i++) {
       Serial.print(samples_on_approach[i] * INDS_TO_FREQS);
       Serial.print(", ");
       Serial.println(samples_on_retreat[i] * INDS_TO_FREQS);
     }
-    Serial.println(calculate_doppler_shift() * INDS_TO_FREQS);
+    Serial.println(calculate_doppler_shift());
   }
 
   // Output to serial for debugging and data logging.
+  //Serial.println("routine checks");
+  Serial.print(state == approach? "approach" : (state == retreat? " retreat" : "  passed"));  
+  Serial.print(", ");
   Serial.print(quantised_value * INDS_TO_FREQS);
   Serial.print(", ");
-  Serial.print(sum_magnitude);
-  Serial.print(", ");
-  Serial.println(state == approach? "approach" : (state == retreat? " retreat" : "  passed"));
+  Serial.println(sum_magnitude);
+  //Serial.print(", ");
+  //Serial.println(circle_ptr);
 
   // Update state machine
   state = stateMachine(state, loud_volume_counter);
@@ -63,12 +67,20 @@ void fourier_transform_loop() {
 
 float calculate_doppler_shift() {
   float approach = 0.0, retreat = 0.0;
+  int samples_used = SAMPLES_IN_CALCULATION;
   for (int i = 0; i < SAMPLES_IN_CALCULATION; i++) {
-    approach += samples_on_approach[i];
-    retreat += samples_on_retreat[i];
+    float app_freq = samples_on_approach[i] * INDS_TO_FREQS;
+    float ret_freq = samples_on_retreat[i] * INDS_TO_FREQS;
+    if (app_freq > 1100 || ret_freq > 1100 || app_freq < 100 || ret_freq < 100) {
+      samples_used --;
+    }
+    else {
+      approach += app_freq;
+      retreat += ret_freq;
+    }
   }
-  approach /= SAMPLES_IN_CALCULATION;
-  retreat /= SAMPLES_IN_CALCULATION;
+  approach /= samples_used;
+  retreat /= samples_used;
 
   return SPEED_OF_SOUND * (approach - retreat) / (approach + retreat);
 }

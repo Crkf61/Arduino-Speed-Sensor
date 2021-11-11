@@ -4,23 +4,23 @@
 // arduino hardware constants
 #define AUDIO   A0
 #define RED     2
-#define BLUE    3
+//#define BLUE    3
 #define GREEN   4
-#define YELLOW  9
+//#define YELLOW  9
 
 #define LOG_SAMPLES    8
 #define SAMPLES        ((int)pow(2,LOG_SAMPLES)) // must be power of 2
 #define BUFFER_SIZE    48
 #define SAMPLE_FREQ    4000.0
-#define SAMPLE_WAIT    (1000000/SAMPLE_FREQ) // microseconds. This gives 2kHz sampling rate
-#define INDS_TO_FREQS  (SAMPLE_FREQ/SAMPLES)
+#define SAMPLE_WAIT    (1000000/SAMPLE_FREQ) // microseconds.
+#define INDS_TO_FREQS  (2*SAMPLE_FREQ/SAMPLES)
 #define SPEED_OF_SOUND 343
 
 #define FREQUENCY_SEPARATION_TOL 4 // allows max and second frequencies to be 2 places apart
 
 // this many samples at the start and end of hearing the drone
 // these samples are averaged and used to calculate doppler shift
-#define SAMPLES_IN_CALCULATION 4
+#define SAMPLES_IN_CALCULATION 16
 
 // for state machine in simulating the passing of the drone
 enum State {
